@@ -50,12 +50,16 @@ exports.seed = function (knex, Promise) {
       return reformatObject(commentData, userIDArray, "article", articleTitleID);
 
     })
+
+    .then((newCommentData) => {
+      return knex('comments').insert(newCommentData).returning('*');
+    }
+    )
+    .catch(err => {
+      console.log(err)
+    })
+
     .then(console.log)
-  // .then((newCommentData) => {
-  //   return knex('comments').insert(newCommentData).returning('*');
-  // }
-  // )
-  // .then(console.log)
 
 
 
