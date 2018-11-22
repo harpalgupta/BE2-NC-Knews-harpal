@@ -1,69 +1,40 @@
-const ENV = process.env.NODE_ENV;
-const topicData = require('../db/data/development-data/topics');
-const userData = require('../db/data/development-data/users');
-const articleData = require('../db/data/development-data/articles');
-const commentData = require('../db/data/development-data/comments');
-let userIDArray = [];
+
+const {
+  topicData, userData, articleData, commentData,
+} = require('../db/data/index');
 
 
-const { usersAndUserID, reformatObject, articleTitleAndArticleID } = require('../utils')
-
+const { usersAndUserID, reformatData, articleTitleAndArticleID } = require('../utils');
 
 
 exports.seed = function (knex, Promise) {
-
   // Deletes ALL existing entries
-  return knex('topics').del()
-    .then(() => {
-      // Inserts seed entries
-      return knex('topics').insert(topicData);
+  return knex('comments').del()
+    .then(() => knex('topics').del())
+    .then(() => knex('users').del())
+    .then(() => knex('articles').del())
+    .then(() => knex('topics').insert(topicData))
+    .then(() => knex('users').insert(userData).returning('*'))
+    .then(userArray => usersAndUserID(userArray))
+    .then((userLookup) => {
+      // console.log('<<<<<<<<<<', articleData);
+
+      const newArticleData = reformatData(articleData, userLookup);
+      return Promise.all([userLookup, newArticleData]);
     })
-    .then(() => {
-      return knex('users').del()
-        .then(() => {
-          return knex('users').insert(userData).returning('*');
-
-        })
-    })
-    .then((userArray) => {
-      userIDArray = usersAndUserID(userArray)
-      return usersAndUserID(userArray);
-
-    }
-    )
-    .then(newUserObj => {
-
-      return reformatObject(articleData, newUserObj);
-
-
-    })
-    .then((newArticleData) => {
-      return knex('articles').del()
-        .then(() => {
-          return knex('articles').insert(newArticleData).returning('*');
-
-        })
-    })
-    .then((articles) => {
-      const articleTitleID = articleTitleAndArticleID(articles)
-
-      return reformatObject(commentData, userIDArray, "article", articleTitleID);
-
+    .then(([userLookup, newArticleData]) => {
+      const articles = knex('articles').insert(newArticleData).returning('*');
+      return Promise.all([userLookup, articles]);
     })
 
-    .then((newCommentData) => {
-      return knex('comments').insert(newCommentData).returning('*');
-    }
-    )
-    .catch(err => {
-      console.log(err)
+    .then(([userLookup, articles]) => {
+      const articleRefObj = articleTitleAndArticleID(articles);
+      const newCommentData = reformatData(commentData, userLookup, 'comment', articleRefObj);
+
+      return newCommentData;
     })
 
-    .then(console.log)
-
-
-
-
-
-
+    .then(newCommentData => knex('comments').insert(newCommentData).returning('*'))
+    .catch((err) => {
+    });
 };
