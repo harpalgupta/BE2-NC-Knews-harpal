@@ -72,7 +72,7 @@ describe('/api', () => {
     it('200 GET', () => request.get(url).expect(200)
       .then(
         (res) => {
-          console.log(res.body);
+          // console.log(res.body);
           expect(res.body).to.have.length(3);
           expect(res.body[2]).to.have.all.keys('article_id', 'author', 'title', 'votes', 'comment_count', 'created_at', 'topic');
           expect(res.body[2].votes).to.equal(100);
@@ -82,7 +82,7 @@ describe('/api', () => {
   });
 
 
-  describe.only('/api/topics/:topic/articles', () => {
+  describe('/api/topics/:topic/articles', () => {
     const url = '/api/topics/cats/articles';
     it('201 POST', () => request.post(url).send({ title: 'harpal the GEEK', user_id: '2', body: 'so Geeky' }).expect(201)
       .then(
@@ -96,6 +96,19 @@ describe('/api', () => {
       ));
   });
 
+
+  describe('/articles', () => {
+    const url = '/api/articles';
+    it('200 GET', () => request.get(url).expect(200)
+      .then(
+        (res) => {
+          // expect(res.body).to.have.length(2);
+          expect(res.body[0]).to.have.all.keys('author', 'title', 'title', 'votes', 'created_at', 'comment_count', 'topic');
+          expect(res.body[1].title).to.equal('UNCOVERED: catspiracy to bring down democracy');
+          // expect(res.body[0].slug).to.equal('mitch');
+        },
+      ));
+  });
 
   describe('/get404', () => {
     const url = '/api/BadURL';
