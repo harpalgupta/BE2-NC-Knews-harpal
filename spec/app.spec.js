@@ -58,8 +58,9 @@ describe('/api', () => {
     it('200 GET', () => request.get(url).expect(200)
       .then(
         (res) => {
+          console.log(res.body[0]);
           expect(res.body).to.have.length(1);
-          expect(res.body[0]).to.have.all.keys('article_id', 'body', 'created_at', 'title', 'topic', 'user_id', 'votes');
+          expect(res.body[0]).to.have.all.keys('article_id', 'author', 'title', 'votes', 'comment_count', 'created_at', 'topic');
           expect(res.body[0].title).to.equal('UNCOVERED: catspiracy to bring down democracy');
         },
 

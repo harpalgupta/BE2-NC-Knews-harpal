@@ -9,9 +9,18 @@ exports.getTopics = ((req, res, next) => connection('topics').select()
     res.status(200).send(topics);
   }).catch(next));
 
+
+// exports.getAllArticlesForTopics = (
+//   (req, res, next) => connection.raw('select articles.article_id, count(comments.comment_id) as comment_count, users.username as author, title , articles.body, articles.votes from articles right join comments on articles.article_id = comments.article_id  join users on articles.user_id = users.user_id group by articles.article_id, users.username').groupBy('articles.article_id', 'comments.comment_id')
+
+
 exports.getAllArticlesForTopics = (
-  (req, res, next) => connection('articles').innerJoin('users', 'users.user_id', '=', 'articles.user_id').select('articles.user_id as author', 'title', 'article_id', 'votes', 'users.username as author')
-  // .where('article.topic', req.params.topic)
+  (req, res, next) => connection('articles')
+    .select('articles.article_id', 'users.username as author', 'articles.title', 'articles.votes', 'articles.created_at', 'articles.topic').where('articles.topic', req.params.topic)
+    .innerJoin('users', 'users.user_id', '=', 'articles.user_id')
+    .rightJoin('comments', 'articles.article_id', '=', 'comments.article_id')
+    .count('comments.comment_id as comment_count')
+    .groupBy('articles.article_id', 'users.username')
     .then((articles) => {
       console.log(articles);
       res.status(200).send(articles);
