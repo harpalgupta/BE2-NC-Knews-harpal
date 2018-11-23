@@ -1,6 +1,7 @@
 const { connection } = require('../db/connection');
 const { queriesHandle } = require('../utils/index');
 
+
 exports.getArticles = (req, res, next) => {
   const queries = (queriesHandle(req));
   connection('articles').select('articles.article_id', 'users.username as author', 'articles.title', 'articles.votes', 'articles.created_at', 'articles.topic')
@@ -11,9 +12,14 @@ exports.getArticles = (req, res, next) => {
     .limit(queries.limit)
     .orderBy([queries.sort_by], queries.sortOrder)
     .offset(queries.p * queries.limit)
+    .modify((queryBuilder) => {
+      if (req.params.article_id) queryBuilder.where('articles.article_id', req.params.article_id);
+    })
     .then((articles) => {
-      console.log(articles);
+      // console.log(articles);
       // console.log('<<<<<', queries.sort_by, queries.sortOrder);
       res.status(200).send(articles);
     });
 };
+
+// exports.
