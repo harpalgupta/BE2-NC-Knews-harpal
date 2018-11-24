@@ -15,6 +15,14 @@ exports.handle404 = (req, res, next) => {
   });
 };
 
+exports.handle405 = (req, res, next) => {
+  // checks 404 then responds with that otherwise passes it on
+  next({
+    status: 405,
+    msg: 'Method not allowed',
+  });
+};
+
 
 exports.handle422 = (err, req, res, next) => {
   const codesFor422 = { 23505: 'Duplicate key' };

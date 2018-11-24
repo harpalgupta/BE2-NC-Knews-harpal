@@ -22,7 +22,8 @@ exports.articleTitleAndArticleID = (userArray) => {
 };
 
 
-exports.reformatData = (originalData, newUserObj, typeOfObject, articleTitleID) => originalData.map((row) => {
+exports.reformatData = (originalData, newUserObj,
+  typeOfObject, articleTitleID) => originalData.map((row) => {
   // console.log("<<<", userArray[0][article.created_by])
   if (typeOfObject === 'comment') {
     row.article_id = articleTitleID[row.belongs_to];

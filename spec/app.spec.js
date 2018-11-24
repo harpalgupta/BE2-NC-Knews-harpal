@@ -19,6 +19,7 @@ describe('/api', () => {
     it('200 GET', () => request.get(url).expect(200)
       .then(
         (res) => {
+          expect(res.body).to.be.a('array');
           expect(res.body).to.have.length(2);
           expect(res.body[0]).to.have.all.keys('slug', 'description');
           expect(res.body[0].description).to.equal('The man, the Mitch, the legend');
@@ -28,7 +29,7 @@ describe('/api', () => {
       ));
   });
 
-
+  // correct post
   describe('/topics', () => {
     const url = '/api/topics';
     it('201 POST', () => request.post(url).send({ slug: 'harpal', description: 'An Enigma' }).expect(201)
@@ -50,32 +51,59 @@ describe('/api', () => {
         },
 
       ));
-  });
-
-
-  describe('/topics/:topics/articles', () => {
-    const url = '/api/topics/cats/articles';
-    it('200 GET', () => request.get(url).expect(200)
+    // post with a bad body
+    it('400 POST', () => request.post(url).send({ bad: 'mitch', body: 'trying to overwrite' }).expect(400)
       .then(
         (res) => {
-          // console.log(res.body[0]);
-          expect(res.body).to.have.length(1);
-          expect(res.body[0]).to.have.all.keys('article_id', 'author', 'title', 'votes', 'comment_count', 'created_at', 'topic');
-          expect(res.body[0].title).to.equal('UNCOVERED: catspiracy to bring down democracy');
+          expect(res.body.msg).to.equal('Malformed Body');
+        },
+
+      ));
+
+    it('405 PATCH', () => request.patch(url).expect(405)
+      .then(
+        (res) => {
+          expect(res.body.msg).to.equal('Method not allowed');
         },
 
       ));
   });
-  // check queries
-  describe('/topics/:topics/articles?sort_by=votes&sort_ascending=true', () => {
-    const url = '/api/topics/mitch/articles?sort_by=votes&sort_ascending=true';
+
+
+  describe('/topics/:topic/articles', () => {
+    const url = '/api/topics/mitch/articles';
     it('200 GET', () => request.get(url).expect(200)
       .then(
         (res) => {
-          // console.log(res.body);
-          expect(res.body).to.have.length(3);
-          expect(res.body[2]).to.have.all.keys('article_id', 'author', 'title', 'votes', 'comment_count', 'created_at', 'topic');
-          expect(res.body[2].votes).to.equal(100);
+          expect(res.body).to.have.length(10);
+          expect(res.body[0]).to.have.all.keys('article_id', 'author', 'title', 'votes', 'comment_count', 'created_at', 'topic');
+          expect(res.body[1].title).to.equal('Sony Vaio; or, The Laptop');
+        },
+
+      ));
+  });
+  // check queries ascending and limit
+  describe('/topics/:topics/articles?sort_by=votes&sort_ascending=true&limit=2', () => {
+    const url = '/api/topics/mitch/articles?sort_by=votes&sort_ascending=true&limit=2';
+    it('200 GET /topics/:topics/articles?sort_by=votes&sort_ascending=true&limit=2', () => request.get(url).expect(200)
+      .then(
+        (res) => {
+          console.log(res.body);
+          expect(res.body).to.have.length(2);
+          expect(res.body[0]).to.have.all.keys('article_id', 'author', 'title', 'votes', 'comment_count', 'created_at', 'topic');
+          expect(res.body[1].votes).to.equal(0);
+        },
+
+      ));
+  });
+
+
+  describe('/topics/notopic/articles', () => {
+    const url = '/api/topics/notopic/articles';
+    it('404 GET /api/topics/notopic/articles', () => request.get(url).expect(404)
+      .then(
+        (res) => {
+          expect(res.body).to.eql({ msg: 'Invalid Topic' });
         },
 
       ));
@@ -84,7 +112,7 @@ describe('/api', () => {
 
   describe('/api/topics/:topic/articles', () => {
     const url = '/api/topics/cats/articles';
-    it('201 POST', () => request.post(url).send({ title: 'harpal the GEEK', user_id: '2', body: 'so Geeky' }).expect(201)
+    it('201 POST /api/topics/cats/articles', () => request.post(url).send({ title: 'harpal the GEEK', user_id: '2', body: 'so Geeky' }).expect(201)
       .then(
         (res) => {
           expect(res.body).to.have.length(1);
@@ -99,10 +127,11 @@ describe('/api', () => {
 
   describe('/articles', () => {
     const url = '/api/articles';
-    it('200 GET', () => request.get(url).expect(200)
+    it('200 GET /api/articles', () => request.get(url).expect(200)
       .then(
         (res) => {
-          // expect(res.body).to.have.length(2);
+          console.log(res.body);
+          expect(res.body).to.have.length(10);
           expect(res.body[0]).to.have.all.keys('author', 'article_id', 'title', 'votes', 'created_at', 'comment_count', 'topic');
           expect(res.body[1].title).to.equal('UNCOVERED: catspiracy to bring down democracy');
           // expect(res.body[0].slug).to.equal('mitch');
@@ -110,9 +139,9 @@ describe('/api', () => {
       ));
   });
 
-  describe.only('/articles/:article_id', () => {
+  describe('/articles/:article_id', () => {
     const url = '/api/articles/3';
-    it('200 GET', () => request.get(url).expect(200)
+    it('200 GET /api/articles/3', () => request.get(url).expect(200)
       .then(
         (res) => {
           // expect(res.body).to.have.length(2);

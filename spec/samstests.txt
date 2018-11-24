@@ -1,0 +1,88 @@
+/
+    ✓ GET returns a 404 for any non-existent route
+    /api
+      /topics
+        ✓ GET responds with status 200 and an array of topics objects
+        ✓ POST responds with a 201 and the added topic
+        ✓ POST responds with a 422 bad request if sent a duplicate slug
+        ✓ POST responds with a 400 if req.body is malformed (not null)
+        ✓ invalid methods respond with 405
+      /topics/:topic/articles
+        ✓ GET responds with a 200 and an array of 10 articles (default limit)
+        ✓ GET responds with a 404 with an invalid topic
+        ✓ GET sorts articles in desc order by date (default order)
+        ✓ GET takes a limit query which alters the number of articles returned
+        ✓ GET takes an p query which returns the next page of articles
+        ✓ GET takes sort_by query which alters the column by which data is sorted (desc order by default)
+        ✓ GET returns default response if given invalid sort_by
+        ✓ GET takes a sort_ascending query which changes the sort to ascending
+        ✓ GET returns all articles with a comment_count property
+        ✓ GET returns all articles with correct keys
+        ✓ GET returns a 400 bad request for malformed non-int limit/p queries
+        ✓ POST responds with a 201 and a newly added article for that topic
+        ✓ POST responds with a 400 if body is malformed (not null)
+        ✓ POST responds with a 404 when trying to add an article to a non-existent topic
+        ✓ invalid methods respond with 405
+      /articles
+        ✓ GET responds with a 200 and an array of 10 articles (default limit)
+        ✓ GET sorts articles in desc order by date (default order)
+        ✓ GET takes a limit query which alters the number of articles returned
+        ✓ GET takes an p query which alters the starting index of the articles returned
+        ✓ GET takes sort_by query which alters the column by which data is sorted (desc order by default)
+        ✓ GET responds with default response if given invalid sort_by
+        ✓ GET takes a sort_ascending query which changes the sort to ascending
+        ✓ GET responds with all articles with a comment_count property
+        ✓ GET responds with all articles with correct keys
+        ✓ GET responds with a 400 bad request for malformed non-int limit/p queries
+        ✓ invalid methods respond with 405
+      /articles/:article_id
+        ✓ GET responds with a 200 and a single article
+        ✓ GET responds with a 404 when given a non-existent article_id
+        ✓ GET responds with a 400 when given an invalid article_id
+        ✓ PATCH responds with a 200 and an updated article when given a body including a valid "inc_votes" (VOTE UP)
+        ✓ PATCH responds with a 200 and an updated article when given a body including a valid "inc_votes" (VOTE DOWN)
+        ✓ PATCH responds with a 400 if given an invalid inc_votes
+        ✓ PATCH with no body responds with an unmodified article
+        ✓ DELETE responds with a 204 and removes the article when given a valid article_id
+        ✓ DELETE responds with a 404 when given a non-existent article_id
+        ✓ DELETE responds with 400 on invalid article_id
+        ✓ DELETE responds with a 204 when deleting an article without comments (no comments required to performdelete)
+        ✓ invalid methods respond with 405
+      /api/articles/:article_id/comments
+        ✓ GET responds with status 200 and all the first 10 comments for the article (default limit)
+        ✓ GET takes a limit query which alters the number of comments returned
+        ✓ GET takes a p query which alters the page of the comments returned
+        ✓ GET sorts in descending order (default order) of date (default criterion)
+        ✓ GET can be sorted by author (desc order default)
+        ✓ GET can be sorted by votes (desc order default)
+        ✓ GET can return the data in ascending order
+        ✓ GET responds with 404 for a non-existent article_id
+        ✓ GET responds with 400 for an invalid article_id
+        ✓ POST responds with a 201 and the posted comment when given a valid article_id
+        ✓ POST responds with a 404 when given a non-existent article id
+        ✓ POST responds with a 400 when given an invalid article id
+        ✓ POST responds with a 400 when given an invalid body referencing a non-existent column
+        ✓ POST responds with a 400 when given a non-existent user_id
+        ✓ invalid methods respond with 405
+      /articles/:article_id/comments/:comment_id
+        ✓ PATCH responds with a 200 and an updated comment when given a body including a valid "inc_votes" (VOTE DOWN)
+        ✓ PATCH responds with a 400 if given an invalid inc_votes
+        ✓ PATCH with no body responds with an unmodified comment
+        ✓ PATCH responds with 404 if non-existent article id is used
+        ✓ PATCH responds with 404 if non-existent comment id is used
+        ✓ PATCH responds with a 404 if given a comment which does not exist on this /:article_id
+        ✓ PATCH responds with 400 if invalid article id is used
+        ✓ PATCH responds with 400 if invalid comment id is used
+        ✓ DELETE responds with a 204 and removes the comment
+        ✓ DELETE responds with 404 if given a non-existent article_id
+        ✓ DELETE responds with 404 if given a non-existent comment_id
+        ✓ DELETE responds with 404 if given a comment which does not exist on this /:article_id
+        ✓ invalid methods respond with 405
+    /users
+      ✓ GET responds with a 200 and an array of user objects
+      ✓ invalid methods respond with 405
+    /users/:user_id
+      ✓ GET responds with a 200 and a user object when given a valid user_id
+      ✓ GET responds with a 404 when a non-existent user_id
+      ✓ GET responds with a 400 when given a malformed user_id
+      ✓ invalid methods respond with 405

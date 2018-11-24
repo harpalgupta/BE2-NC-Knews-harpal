@@ -12,6 +12,7 @@ exports.getArticles = (req, res, next) => {
     .limit(queries.limit)
     .orderBy([queries.sort_by], queries.sortOrder)
     .offset(queries.p * queries.limit)
+    // deals with one article too
     .modify((queryBuilder) => {
       if (req.params.article_id) queryBuilder.where('articles.article_id', req.params.article_id);
     })

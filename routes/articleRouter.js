@@ -4,7 +4,8 @@ const { getArticles, addCommentsForArticle } = require('../controllers/articleCo
 // GET /api/topics/:topic/articles
 
 articleRouter.get('/', getArticles);
+articleRouter.get('/:article_id', getArticles);
+
 // articleRouter.post('/api/articles/:article_id/comments', addCommentsForArticle);
 
-articleRouter.get('/:article_id', getArticles);
 module.exports = articleRouter;
