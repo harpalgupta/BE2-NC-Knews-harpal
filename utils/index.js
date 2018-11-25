@@ -8,11 +8,11 @@ exports.queriesHandle = (req) => {
     article_id: 'articles.article_id', username: 'articles.username', title: 'articles.title', votes: 'articles.votes', created_at: 'articles.created_at', topic: 'articles.topics', author: 'articles.username', comment_count: 'comment_count',
   };
   if (validColumnsArticles[req.query.sort_by]) queries.sort_by = validColumnsArticles[req.query.sort_by]; else queries.sort_by = 'created_at';
-  //   const validTitleColumns
-  //
-  if (queries.limit > 0 || queries.p > 0) queries.valid = true;
-  else queries.valid = false;
 
+  // console.log('QUERY p IS', queries.p);
+
+  if (queries.limit > 0 && req.query.p >= 0) queries.valid = true;
+  else queries.valid = false;
   return queries;
 };
 

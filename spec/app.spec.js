@@ -125,6 +125,7 @@ describe('/api', () => {
       ));
   });
 
+  // 201 POST cat topic article
 
   describe('/api/topics/:topic/articles', () => {
     let url = '/api/topics/cats/articles';
@@ -160,20 +161,33 @@ describe('/api', () => {
 
   describe('/articles', () => {
     const url = '/api/articles';
-    it('200 GET /api/articles', () => request.get(url).expect(200)
+    // checking get with invalid sort_by column defaults and gets correct results
+    it('200 GET /api/articles?sort_by=invalid_column', () => request.get(`${url}?sort_by=invalid_column`).expect(200)
       .then(
         (res) => {
+          // console.log(res.body);
           expect(res.body).to.have.length(10);
           expect(res.body[0]).to.have.all.keys('author', 'article_id', 'title', 'votes', 'created_at', 'comment_count', 'topic');
-          expect(res.body[1].title).to.equal('UNCOVERED: catspiracy to bring down democracy');
+          expect(res.body[9].title).to.equal('Seven inspirational thought leaders from Manchester UK');
+          // expect(res.body[0].slug).to.equal('mitch');
+        },
+      ));
+    // sort_by and limit check
+    it('200 GET /api/articles?limit=3', () => request.get(`${url}?limit=3&sort_by=title`).expect(200)
+      .then(
+        (res) => {
+          console.log(res.body);
+          expect(res.body).to.have.length(3);
+          expect(res.body[0]).to.have.all.keys('author', 'article_id', 'title', 'votes', 'created_at', 'comment_count', 'topic');
+          expect(res.body[2].title).to.equal('They\'re not exactly dogs, are they?');
           // expect(res.body[0].slug).to.equal('mitch');
         },
       ));
   });
 
-  describe('/articles/:article_id', () => {
-    const url = '/api/articles/3';
-    it('200 GET /api/articles/3', () => request.get(url).expect(200)
+  describe.only('/articles/:article_id', () => {
+    const url = '/api/articles/';
+    it('200 GET /api/articles/3', () => request.get(`${url}3`).expect(200)
       .then(
         (res) => {
           // expect(res.body).to.have.length(2);
@@ -181,6 +195,28 @@ describe('/api', () => {
 
           expect(res.body[0].title).to.equal('They\'re not exactly dogs, are they?');
           // expect(res.body[0].slug).to.equal('mitch');
+        },
+      ));
+    // Invalid Article ID
+    it('404 GET /api/articles/100', () => request.get(`${url}100`).expect(404)
+      .then(
+        (res) => {
+          console.log(res.body);
+          expect(res.body.msg).to.equal('Non existant Article Id');
+        },
+      ));
+
+    it('400 GET /api/articles/wrongdatatype', () => request.get(`${url}wrongdatatype`).expect(400)
+      .then(
+        (res) => {
+          console.log(res.body);
+          expect(res.body.msg).to.equal('Article ID must be integer');
+        },
+      ));
+    it('200 PATCH /api/articles/1', () => request.patch(`${url}1`).send({ inc_votes: 1 }).expect(200)
+      .then(
+        (res) => {
+          expect(res.body.votes).to.equal(101);
         },
       ));
   });

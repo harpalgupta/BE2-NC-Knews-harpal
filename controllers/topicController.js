@@ -2,6 +2,7 @@
 const { queriesHandle } = require('../utils/index');
 const { connection } = require('../db/connection');
 
+
 // exports.check400 =((req, res, next) =>{
 // if (req.params.topics.match(/\d+/))};
 
@@ -14,9 +15,9 @@ exports.getTopics = ((req, res, next) => connection('topics').select()
 exports.getAllArticlesForTopics = (
   (req, res, next) => {
     const queries = queriesHandle(req);
-    if (queries.valid === false) {
-      return res.status(400).send({ msg: 'Malformed Body' });
-    }
+    // if (queries.valid === false) {
+    //   return res.status(400).send({ msg: 'Malformed Query' });
+    // }
 
 
     return connection('articles')
