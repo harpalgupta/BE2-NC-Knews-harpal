@@ -27,12 +27,20 @@ exports.handle422 = (err, req, res, next) => {
   } else next(err);
 };
 
-exports.handle404 = (req, res, next) => {
+exports.handle404 = (err, req, res, next) => {
   // checks 404 then responds with that otherwise passes it on
   next({
     status: 404,
     msg: 'Page not found',
   });
+
+  const codesFor404 = { 23503: 'Page not found' };
+  if (codesFor404[err.code]) {
+    next({
+      status: 404,
+      msg: 'Page not found',
+    });
+  }
 };
 exports.handleOtherErrors = (err, req, res, next) => {
   console.log(err);
