@@ -8,6 +8,13 @@ const { connection } = require('../db/connection');
 
 
 describe('/api', () => {
+  it('api description', () => {
+    request.get('/api').expect(200).then(
+      (res) => {
+
+      },
+    );
+  });
   beforeEach(() => connection.migrate.rollback()
     .then(() => connection.migrate.latest())
     .then(() => connection.seed.run()));
