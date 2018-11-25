@@ -1,13 +1,22 @@
-exports.queriesHandle = (req) => {
+exports.queriesHandle = (req, typeOfData) => {
   const queries = {
     limit: req.query.limit || 10, sort_by: req.query.sort_by || 'created_at', p: req.query.p - 1 || 0, sort_ascending: req.query.sort_ascending || false,
   };
   if (queries.sort_ascending === 'true') { queries.sortOrder = 'asc'; } else queries.sortOrder = 'desc';
 
-  const validColumnsArticles = {
-    article_id: 'articles.article_id', username: 'articles.username', title: 'articles.title', votes: 'articles.votes', created_at: 'articles.created_at', topic: 'articles.topics', author: 'articles.username', comment_count: 'comment_count',
-  };
-  if (validColumnsArticles[req.query.sort_by]) queries.sort_by = validColumnsArticles[req.query.sort_by]; else queries.sort_by = 'created_at';
+
+  if (typeOfData === 'comments') {
+    const validColumnsComments = {
+      article_id: 'comments.comment_id', user_id: 'comments.user_id', votes: 'comments.votes', created_at: 'comments.created_at', body: 'comments.body', author: 'users.username',
+    };
+    if (validColumnsComments[req.query.sort_by]) queries.sort_by = validColumnsComments[req.query.sort_by]; else queries.sort_by = 'created_at';
+  } else {
+    const validColumnsArticles = {
+      article_id: 'articles.article_id', username: 'articles.username', title: 'articles.title', votes: 'articles.votes', created_at: 'articles.created_at', topic: 'articles.topics', author: 'articles.username', comment_count: 'comment_count',
+    };
+    if (validColumnsArticles[req.query.sort_by]) queries.sort_by = validColumnsArticles[req.query.sort_by]; else queries.sort_by = 'created_at';
+  }
+
 
   // console.log('QUERY p IS', queries.p);
 

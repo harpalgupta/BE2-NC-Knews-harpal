@@ -34,7 +34,7 @@ exports.getAllArticlesForTopics = (
         if (articles.length === 0) return next({ status: 404, msg: 'Invalid Topic' });
         // console.log(articles);
         // console.log('<<<<<', queries.sort_by, queries.sortOrder);
-        res.status(200).send(articles);
+        return res.status(200).send(articles);
       })
       .catch(next);
   }
@@ -53,7 +53,6 @@ exports.getAllArticlesForTopics = (
 
 exports.addTopic = (
   (req, res, next) => {
-    console.log('<<<adding topic');
     if (req.body.slug && req.body.description) {
       return connection('topics').insert(req.body).returning('*')
         .then((topics) => {

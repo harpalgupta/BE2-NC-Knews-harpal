@@ -38,32 +38,32 @@
       /articles/:article_id
         ✓ GET responds with a 200 and a single article d
         ✓ GET responds with a 404 when given a non-existent article_id d
-        ✓ GET responds with a 400 when given an invalid article_id
-        ✓ PATCH responds with a 200 and an updated article when given a body including a valid "inc_votes" (VOTE UP)
-        ✓ PATCH responds with a 200 and an updated article when given a body including a valid "inc_votes" (VOTE DOWN)
-        ✓ PATCH responds with a 400 if given an invalid inc_votes
-        ✓ PATCH with no body responds with an unmodified article
-        ✓ DELETE responds with a 204 and removes the article when given a valid article_id
-        ✓ DELETE responds with a 404 when given a non-existent article_id
-        ✓ DELETE responds with 400 on invalid article_id
+        ✓ GET responds with a 400 when given an invalid article_id d
+        ✓ PATCH responds with a 200 and an updated article when given a body including a valid "inc_votes" (VOTE UP) d
+        ✓ PATCH responds with a 200 and an updated article when given a body including a valid "inc_votes" (VOTE DOWN)d
+        ✓ PATCH responds with a 400 if given an invalid inc_votes d
+        ✓ PATCH with no body responds with an unmodified article d
+        ✓ DELETE responds with a 204 and removes the article when given a valid article_id d
+        ✓ DELETE responds with a 404 when given a non-existent article_id d
+        ✓ DELETE responds with 400 on invalid article_id d
         ✓ DELETE responds with a 204 when deleting an article without comments (no comments required to performdelete)
-        ✓ invalid methods respond with 405
+        ✓ invalid methods respond with 405 d
       /api/articles/:article_id/comments
-        ✓ GET responds with status 200 and all the first 10 comments for the article (default limit)
-        ✓ GET takes a limit query which alters the number of comments returned
-        ✓ GET takes a p query which alters the page of the comments returned
-        ✓ GET sorts in descending order (default order) of date (default criterion)
-        ✓ GET can be sorted by author (desc order default)
-        ✓ GET can be sorted by votes (desc order default)
-        ✓ GET can return the data in ascending order
-        ✓ GET responds with 404 for a non-existent article_id
-        ✓ GET responds with 400 for an invalid article_id
-        ✓ POST responds with a 201 and the posted comment when given a valid article_id
-        ✓ POST responds with a 404 when given a non-existent article id
-        ✓ POST responds with a 400 when given an invalid article id
-        ✓ POST responds with a 400 when given an invalid body referencing a non-existent column
-        ✓ POST responds with a 400 when given a non-existent user_id
-        ✓ invalid methods respond with 405
+        ✓ GET responds with status 200 and all the first 10 comments for the article (default limit) d
+        ✓ GET takes a limit query which alters the number of comments returned d
+        ✓ GET takes a p query which alters the page of the comments returned d
+        ✓ GET sorts in descending order (default order) of date (default criterion) d
+        ✓ GET can be sorted by author (desc order default) d
+        ✓ GET can be sorted by votes (desc order default) d
+        ✓ GET can return the data in ascending order d
+        ✓ GET responds with 404 for a non-existent article_id d
+        ✓ GET responds with 400 for an invalid article_id d
+        ✓ POST responds with a 201 and the posted comment when given a valid article_id d
+        ✓ POST responds with a 404 when given a non-existent article id d
+        ✓ POST responds with a 400 when given an invalid article id d
+        ✓ POST responds with a 400 when given an invalid body referencing a non-existent column d
+        ✓ POST responds with a 400 when given a non-existent user_id d
+        ✓ invalid methods respond with 405 d
       /articles/:article_id/comments/:comment_id
         ✓ PATCH responds with a 200 and an updated comment when given a body including a valid "inc_votes" (VOTE DOWN)
         ✓ PATCH responds with a 400 if given an invalid inc_votes
