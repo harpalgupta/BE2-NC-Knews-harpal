@@ -13,7 +13,6 @@
     "migrate:latest:prod": "DB_URL=$(heroku config:get DATABASE_URL) knex migrate:latest --env production",
     "migrate:rollback:prod": "DB_URL=$(heroku config:get DATABASE_URL) knex migrate:rollback --env production",
     "start": "node listen.js"
-
   },
   "repository": {
     "type": "git",
@@ -38,7 +37,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.9.0",
-    "husky": "^1.1.4",
+    "husky": "^1.2.0",
     "nodemon": "^1.18.6",
     "supertest": "^3.3.0"
   }

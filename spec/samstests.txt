@@ -2,25 +2,25 @@
     ✓ GET returns a 404 for any non-existent route
     /api
       /topics
-        ✓ GET responds with status 200 and an array of topics objects
-        ✓ POST responds with a 201 and the added topic
-        ✓ POST responds with a 422 bad request if sent a duplicate slug
-        ✓ POST responds with a 400 if req.body is malformed (not null)
-        ✓ invalid methods respond with 405
+        ✓ GET responds with status 200 and an array of topics objects d
+        ✓ POST responds with a 201 and the added topic d
+        ✓ POST responds with a 422 bad request if sent a duplicate slug d 
+        ✓ POST responds with a 400 if req.body is malformed (not null) d
+        ✓ invalid methods respond with 405 d
       /topics/:topic/articles
-        ✓ GET responds with a 200 and an array of 10 articles (default limit)
-        ✓ GET responds with a 404 with an invalid topic
-        ✓ GET sorts articles in desc order by date (default order)
-        ✓ GET takes a limit query which alters the number of articles returned
-        ✓ GET takes an p query which returns the next page of articles
-        ✓ GET takes sort_by query which alters the column by which data is sorted (desc order by default)
-        ✓ GET returns default response if given invalid sort_by
-        ✓ GET takes a sort_ascending query which changes the sort to ascending
-        ✓ GET returns all articles with a comment_count property
-        ✓ GET returns all articles with correct keys
-        ✓ GET returns a 400 bad request for malformed non-int limit/p queries
-        ✓ POST responds with a 201 and a newly added article for that topic
-        ✓ POST responds with a 400 if body is malformed (not null)
+        ✓ GET responds with a 200 and an array of 10 articles (default limit) d
+        ✓ GET responds with a 404 with an invalid topic d
+        ✓ GET sorts articles in desc order by date (default order) d
+        ✓ GET takes a limit query which alters the number of articles returned d
+        ✓ GET takes an p query which returns the next page of articles d
+        ✓ GET takes sort_by query which alters the column by which data is sorted (desc order by default) p
+        ✓ GET returns default response if given invalid sort_by d
+        ✓ GET takes a sort_ascending query which changes the sort to ascending d
+        ✓ GET returns all articles with a comment_count property d
+        ✓ GET returns all articles with correct keys d
+        ✓ GET returns a 400 bad request for malformed non-int limit/p queries d
+        ✓ POST responds with a 201 and a newly added article for that topic d
+        ✓ POST responds with a 400 if body is malformed (not null) d
         ✓ POST responds with a 404 when trying to add an article to a non-existent topic
         ✓ invalid methods respond with 405
       /articles

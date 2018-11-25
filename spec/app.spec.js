@@ -75,9 +75,12 @@ describe('/api', () => {
     it('200 GET', () => request.get(url).expect(200)
       .then(
         (res) => {
+          // console.log(res.body);
           expect(res.body).to.have.length(10);
           expect(res.body[0]).to.have.all.keys('article_id', 'author', 'title', 'votes', 'comment_count', 'created_at', 'topic');
           expect(res.body[1].title).to.equal('Sony Vaio; or, The Laptop');
+          // check order is descending by date default
+          expect(res.body[9].created_at).to.equal('1970-01-01T00:00:00.002Z');
         },
 
       ));
@@ -88,7 +91,6 @@ describe('/api', () => {
     it('200 GET /topics/:topics/articles?sort_by=votes&sort_ascending=true&limit=2', () => request.get(url).expect(200)
       .then(
         (res) => {
-          console.log(res.body);
           expect(res.body).to.have.length(2);
           expect(res.body[0]).to.have.all.keys('article_id', 'author', 'title', 'votes', 'comment_count', 'created_at', 'topic');
           expect(res.body[1].votes).to.equal(0);
@@ -96,8 +98,22 @@ describe('/api', () => {
 
       ));
   });
+  // check queries pages and invalid sort by defaults
+  describe('/topics/:topics/articles?p=2&sort_by=blah', () => {
+    const url = '/api/topics/mitch/articles?p=2&sort_by=blah';
+    it('200 GET /topics/:topics/articles?p=2&sort_by=blah', () => request.get(url).expect(200)
+      .then(
+        (res) => {
+          expect(res.body).to.have.length(1);
+          expect(res.body[0]).to.have.all.keys('article_id', 'author', 'title', 'votes', 'comment_count', 'created_at', 'topic');
+          // expect(res.body[1].votes).to.equal(0);
+        },
+
+      ));
+  });
 
 
+  // 404 for non existant topic
   describe('/topics/notopic/articles', () => {
     const url = '/api/topics/notopic/articles';
     it('404 GET /api/topics/notopic/articles', () => request.get(url).expect(404)
@@ -111,7 +127,7 @@ describe('/api', () => {
 
 
   describe('/api/topics/:topic/articles', () => {
-    const url = '/api/topics/cats/articles';
+    let url = '/api/topics/cats/articles';
     it('201 POST /api/topics/cats/articles', () => request.post(url).send({ title: 'harpal the GEEK', user_id: '2', body: 'so Geeky' }).expect(201)
       .then(
         (res) => {
@@ -122,6 +138,23 @@ describe('/api', () => {
         },
 
       ));
+    it('400 POST with {bad: \'mitch\' body: \'rubbish\' ', () => request.post(url).send({ bad: 'mitch', body: 'rubbish' }).expect(400)
+      .then(
+        (res) => {
+          expect(res.body.msg).to.equal('Malformed Body');
+        },
+
+      ));
+    it('404 POST with non existent topic /api/topics/badTopic/articles', () => {
+      url = '/api/topics/badTopic/articles';
+      return request.post(url).send({ title: 'harpal the GEEK', user_id: '2', body: 'so Geeky' }).expect(404)
+        .then(
+          (res) => {
+            expect(res.body.msg).to.equal('Page not found');
+          },
+
+        );
+    });
   });
 
 
@@ -130,7 +163,6 @@ describe('/api', () => {
     it('200 GET /api/articles', () => request.get(url).expect(200)
       .then(
         (res) => {
-          console.log(res.body);
           expect(res.body).to.have.length(10);
           expect(res.body[0]).to.have.all.keys('author', 'article_id', 'title', 'votes', 'created_at', 'comment_count', 'topic');
           expect(res.body[1].title).to.equal('UNCOVERED: catspiracy to bring down democracy');

@@ -1,7 +1,6 @@
 
 const { queriesHandle } = require('../utils/index');
 const { connection } = require('../db/connection');
-const { handle404 } = require('../errors');
 
 // exports.check400 =((req, res, next) =>{
 // if (req.params.topics.match(/\d+/))};
@@ -15,6 +14,10 @@ exports.getTopics = ((req, res, next) => connection('topics').select()
 exports.getAllArticlesForTopics = (
   (req, res, next) => {
     const queries = queriesHandle(req);
+    if (queries.valid === false) {
+      return res.status(400).send({ msg: 'Malformed Body' });
+    }
+
 
     return connection('articles')
       .select('articles.article_id', 'users.username as author', 'articles.title', 'articles.votes', 'articles.created_at', 'articles.topic')
@@ -65,6 +68,8 @@ exports.addTopic = (
 
 exports.addArticleForTopic = (
   (req, res, next) => {
+    if (!req.body.title || !req.body.user_id || !req.body.body) return res.status(400).send({ msg: 'Malformed Body' });
+
     const newArticle = req.body;
     newArticle.topic = req.params.topic;
     return connection('articles').insert(newArticle).returning('*')
