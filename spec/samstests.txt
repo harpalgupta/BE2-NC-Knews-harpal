@@ -65,13 +65,13 @@
         ✓ POST responds with a 400 when given a non-existent user_id d
         ✓ invalid methods respond with 405 d
       /articles/:article_id/comments/:comment_id
-        ✓ PATCH responds with a 200 and an updated comment when given a body including a valid "inc_votes" (VOTE DOWN)
-        ✓ PATCH responds with a 400 if given an invalid inc_votes
-        ✓ PATCH with no body responds with an unmodified comment
-        ✓ PATCH responds with 404 if non-existent article id is used
-        ✓ PATCH responds with 404 if non-existent comment id is used
-        ✓ PATCH responds with a 404 if given a comment which does not exist on this /:article_id
-        ✓ PATCH responds with 400 if invalid article id is used
+        ✓ PATCH responds with a 200 and an updated comment when given a body including a valid "inc_votes" (VOTE DOWN) d
+        ✓ PATCH responds with a 400 if given an invalid inc_votes d
+        ✓ PATCH with no body responds with an unmodified comment d
+        ✓ PATCH responds with 404 if non-existent article id is used ???
+        ✓ PATCH responds with 404 if non-existent comment id is used  d
+        ✓ PATCH responds with a 404 if given a comment which does not exist on this /:article_id ??
+        ✓ PATCH responds with 400 if invalid article id is used 
         ✓ PATCH responds with 400 if invalid comment id is used
         ✓ DELETE responds with a 204 and removes the comment
         ✓ DELETE responds with 404 if given a non-existent article_id

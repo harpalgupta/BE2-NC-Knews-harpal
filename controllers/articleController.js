@@ -20,7 +20,9 @@ exports.getArticles = (req, res, next) => {
     })
     .then((articles) => {
       if (articles.length === 0) return next({ status: 404, msg: 'Non existant Article Id' });
-      return res.status(200).send(articles);
+      if (articles.length === 1) return res.status(200).send(articles[0]);
+
+      return res.status(200).send({ articles });
     })
     .catch(next);
 };
@@ -63,7 +65,7 @@ exports.getCommentsForArticle = (req, res, next) => {
     .then((comments) => {
       // console.log(comments);
       if (comments.length === 0) return next({ status: 404, msg: 'Non existant Article Id' });
-      return res.status(200).send(comments);
+      return res.status(200).send({ comments });
     })
     .catch(next);
 };
@@ -76,7 +78,7 @@ exports.addCommentForArticle = (req, res, next) => {
     };
     return connection('comments').insert(commentPost).returning('*')
       .then(([comment]) => {
-        res.status(201).send(comment);
+        res.status(201).send({ comment });
       })
       .catch(next);
   }

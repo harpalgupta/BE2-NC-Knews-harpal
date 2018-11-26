@@ -8,7 +8,7 @@ const { connection } = require('../db/connection');
 
 exports.getTopics = ((req, res, next) => connection('topics').select()
   .then((topics) => {
-    res.status(200).send(topics);
+    res.status(200).send({ topics });
   }).catch(next));
 
 
@@ -34,29 +34,20 @@ exports.getAllArticlesForTopics = (
         if (articles.length === 0) return next({ status: 404, msg: 'Invalid Topic' });
         // console.log(articles);
         // console.log('<<<<<', queries.sort_by, queries.sortOrder);
-        return res.status(200).send(articles);
+        return res.status(200).send({ articles });
       })
       .catch(next);
   }
 
 );
 
-/*
-  each article should have:
-    - `author` which is the `username` from the users table,
-    - `title`
-    - `article_id`
-    - `votes`
-    - `comment_count`
-  */
-
 
 exports.addTopic = (
   (req, res, next) => {
     if (req.body.slug && req.body.description) {
       return connection('topics').insert(req.body).returning('*')
-        .then((topics) => {
-          res.status(201).send(topics);
+        .then(([topic]) => {
+          res.status(201).send({ topic });
         })
         .catch(next);
     }
@@ -73,8 +64,8 @@ exports.addArticleForTopic = (
     const newArticle = req.body;
     newArticle.topic = req.params.topic;
     return connection('articles').insert(newArticle).returning('*')
-      .then((topic) => {
-        res.status(201).send(topic);
+      .then(([article]) => {
+        res.status(201).send({ article });
       })
       .catch(next);
   }
