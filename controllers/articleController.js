@@ -36,10 +36,11 @@ exports.updateArticle = (req, res, next) => {
       .catch(next);
   }
   if (!Number.isInteger(body.inc_votes) && body.inc_votes) next({ status: 400, msg: 'Invalid inc_votes' });
-  return connection('articles').update('votes', connection.raw(`votes + ${body.inc_votes}`)).where('articles.article_id', req.params.article_id).returning('*')
-    .then(([untouchedArticle]) => {
-      res.status(200).send(untouchedArticle);
-    })
+  return connection('articles').update('votes')
+    .increment('votes', body.inc_votes)
+    .where('articles.article_id', req.params.article_id)
+    .returning('*')
+    .then(([untouchedArticle]) => res.status(200).send(untouchedArticle))
     .catch(next);
 };
 
@@ -92,19 +93,17 @@ exports.updateComment = (req, res, next) => {
     return connection('comments').select().where('comments.comment_id', req.params.comment).then(([untouchedArticle]) => res.status(200).send(untouchedArticle))
       .catch(next);
   }
-  if (!Number.isInteger(body.inc_votes) && body.inc_votes) next({ status: 400, msg: 'Invalid inc_votes' });
-  else {
-    return connection('comments')
-    // .update('votes', connection.raw(`votes + ${body.inc_votes}`))
-      .increment('votes', body.inc_votes)
-      .where('comments.comment_id', req.params.comment)
-      .returning('*')
-      .then(([updatedArticle]) => {
-        if (updatedArticle) { return res.status(200).send(updatedArticle); }
-        return res.status(404).send({ msg: 'Non existant Article Id' });
-      })
-      .catch(next);
-  }
+  if (!Number.isInteger(body.inc_votes) && body.inc_votes) return next({ status: 400, msg: 'Invalid inc_votes' });
+
+  return connection('comments')
+    .increment('votes', body.inc_votes)
+    .where('comments.comment_id', req.params.comment)
+    .returning('*')
+    .then(([updatedArticle]) => {
+      if (updatedArticle) { return res.status(200).send(updatedArticle); }
+      return res.status(404).send({ msg: 'Non existant Article Id' });
+    })
+    .catch(next);
 };
 
 exports.deleteComment = (req, res, next) => connection('comments').where('comments.comment_id', req.params.comment).del().returning('*')
@@ -113,10 +112,3 @@ exports.deleteComment = (req, res, next) => connection('comments').where('commen
     return res.status(204).send({ msg: 'Deleted item' });
   })
   .catch(next);
-/*
-  `comment_id`
-    - `votes`
-    - `created_at`
-    - `author` which is the `username` from the users table
-    - `body`
-  */

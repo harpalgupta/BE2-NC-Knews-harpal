@@ -4,7 +4,6 @@ const { connection } = require('../db/connection');
 
 
 // exports.check400 =((req, res, next) =>{
-// if (req.params.topics.match(/\d+/))};
 
 exports.getTopics = ((req, res, next) => connection('topics').select()
   .then((topics) => {
@@ -15,9 +14,6 @@ exports.getTopics = ((req, res, next) => connection('topics').select()
 exports.getAllArticlesForTopics = (
   (req, res, next) => {
     const queries = queriesHandle(req);
-    // if (queries.valid === false) {
-    //   return res.status(400).send({ msg: 'Malformed Query' });
-    // }
 
 
     return connection('articles')
@@ -32,8 +28,6 @@ exports.getAllArticlesForTopics = (
       .offset(queries.p * queries.limit)
       .then((articles) => {
         if (articles.length === 0) return next({ status: 404, msg: 'Invalid Topic' });
-        // console.log(articles);
-        // console.log('<<<<<', queries.sort_by, queries.sortOrder);
         return res.status(200).send({ articles });
       })
       .catch(next);
@@ -46,8 +40,14 @@ exports.addTopic = (
   (req, res, next) => {
     if (req.body.slug && req.body.description) {
       return connection('topics').insert(req.body).returning('*')
-        .then(([topic]) => {
-          res.status(201).send({ topic });
+        .then((topic) => {
+          if (topic.length === 1) {
+            const singleTopic = topic[0];
+            // console.log([singleTopic]);
+            res.status(201).send({ topic: singleTopic });
+          }
+          if (topic.length > 1) res.status(201).send({ topic });
+          return next(topic);
         })
         .catch(next);
     }
