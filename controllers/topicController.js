@@ -17,7 +17,7 @@ exports.getAllArticlesForTopics = (
 
 
     return connection('articles')
-      .select('articles.article_id', 'users.username as author', 'articles.title', 'articles.votes', 'articles.created_at', 'articles.topic')
+      .select('articles.article_id', 'users.username as author', 'articles.title', 'articles.votes', 'articles.created_at', 'articles.topic', 'articles.body')
       .innerJoin('users', 'users.user_id', '=', 'articles.user_id')
       .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
       .count('comments.comment_id as comment_count')

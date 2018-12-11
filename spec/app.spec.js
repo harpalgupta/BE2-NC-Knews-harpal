@@ -83,6 +83,7 @@ describe('/api', () => {
             'comment_count',
             'created_at',
             'topic',
+            'body',
           );
           expect(res.body.articles[1].title).to.equal(
             'Sony Vaio; or, The Laptop',
@@ -109,6 +110,7 @@ describe('/api', () => {
             'comment_count',
             'created_at',
             'topic',
+            'body',
           );
           expect(res.body.articles[1].votes).to.equal(0);
         });
@@ -130,6 +132,7 @@ describe('/api', () => {
             'comment_count',
             'created_at',
             'topic',
+            'body',
           );
         });
     });
