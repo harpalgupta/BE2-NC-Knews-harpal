@@ -42,12 +42,12 @@ for example:
 to Deploy to Heroku:
 
 * Sign for Heroku account: https://www.heroku.com/
-npm install -g heroku (install heroku globally)
-heroku login with your credentials (login to heroku)
-heroku create APP_NAME
-git push heroku master
-heroku open (open your app)
-goto app address /api
+* npm install -g heroku (install heroku globally)
+* heroku login with your credentials (login to heroku)
+* heroku create APP_NAME
+* git push heroku master
+* heroku open (open your app)
+* goto app address /api
 
 
 ## Authors
