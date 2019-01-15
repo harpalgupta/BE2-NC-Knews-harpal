@@ -8,7 +8,6 @@ const { usersAndUserID, reformatData, articleTitleAndArticleID } = require('../u
 
 
 exports.seed = function (knex, Promise) {
-  // Deletes ALL existing entries
   return knex('comments').del()
     .then(() => knex('topics').del())
     .then(() => knex('users').del())
@@ -17,8 +16,6 @@ exports.seed = function (knex, Promise) {
     .then(() => knex('users').insert(userData).returning('*'))
     .then(userArray => usersAndUserID(userArray))
     .then((userLookup) => {
-      // console.log('<<<<<<<<<<', articleData);
-
       const newArticleData = reformatData(articleData, userLookup);
       return Promise.all([userLookup, newArticleData]);
     })

@@ -8,7 +8,6 @@ exports.handle400 = (req, res, next) => {
 
 
 exports.handle405 = (req, res, next) => {
-  // checks 404 then responds with that otherwise passes it on
   next({
     status: 405,
     msg: 'Method not allowed',
@@ -27,8 +26,6 @@ exports.handle422 = (err, req, res, next) => {
 };
 
 exports.handle404 = (err, req, res, next) => {
-  // checks 404 then responds with that otherwise passes it on
-
   const codesFor404 = { 23503: 'Page not found' };
   if (codesFor404[err.code]) {
     err.status = 404;

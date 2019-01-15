@@ -6,7 +6,6 @@ const {
   handle405,
 } = require('../errors');
 
-//   api/topics
 topicRouter.route('/').get(getTopics).post(addTopic).all(handle405);
 
 

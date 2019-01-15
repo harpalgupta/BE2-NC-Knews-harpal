@@ -18,8 +18,6 @@ exports.queriesHandle = (req, typeOfData) => {
   }
 
 
-  // console.log('QUERY p IS', queries.p);
-
   if (queries.limit > 0 && req.query.p >= 0) queries.valid = true;
   else queries.valid = false;
   return queries;
@@ -54,7 +52,6 @@ exports.reformatData = (originalData, newUserObj,
       created_at: new Date(row.created_at),
     };
 
-    // console.log('NEW article id', row.article_id);
     delete newComment.belongs_to;
     delete newComment.created_by;
     return newComment;

@@ -1,9 +1,0 @@
-You are now connected to database "knews_test" as user "harpal".
- article_id | comment_count |    author     |                     title                     |                          body                          | votes 
-------------+---------------+---------------+-----------------------------------------------+--------------------------------------------------------+-------
-          4 |             2 | rogersop      | UNCOVERED: catspiracy to bring down democracy | Bastet walks amongst us, and the cats are taking arms! |     0
-          3 |             2 | butter_bridge | They're not exactly dogs, are they?           | Well? Think about it.                                  |     0
-          1 |            13 | butter_bridge | Living in the shadow of a great man           | I find this existence challenging                      |   100
-          9 |             1 | icellusedkars | A                                             | Delicious tin of cat food                              |     0
-(4 rows)
-
