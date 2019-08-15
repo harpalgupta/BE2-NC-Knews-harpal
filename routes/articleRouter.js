@@ -8,7 +8,7 @@ const {
   addCommentForArticle,
   updateComment,
   deleteComment,
-  getComment
+  getComment,
 } = require('../controllers/articleController');
 
 const checkArticleID = (req, res, next, articleid) => {
@@ -19,7 +19,6 @@ const checkArticleID = (req, res, next, articleid) => {
   return next();
 };
 const checkCommentID = (req, res, next, commentid) => {
-  console.log('checking', commentid);
   if (commentid.match(/\D/)) {
     return next({ status: 400, msg: 'Comment ID must be integer' });
   }

@@ -1,17 +1,17 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDoc = require('./swagger.json');
 const apiRouter = require('./routes/apiRouter');
 const { handle404, handleOtherErrors, handle422 } = require('./errors');
-const { PORT = "9090", HOST= "localhost" } = process.env;//v1 api routes
+
+const { PORT = '9090', HOST = 'localhost' } = process.env;// v1 api routes
 
 
-const swaggerUi = require('swagger-ui-express');
-var swaggerDoc = require('./swagger.json');
+swaggerDoc.host = `${HOST}:${PORT}`;
 
-swaggerDoc.host = HOST+":"+PORT;
-
-//app.use('/api/v1/', require('./routes/'));
+// app.use('/api/v1/', require('./routes/'));
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 
