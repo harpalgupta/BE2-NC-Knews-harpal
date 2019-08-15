@@ -49,6 +49,9 @@ to Deploy to Heroku:
 * heroku open (open your app)
 * goto app address /api
 
+## Swagger
+To Test Endpoints you can go to swagger
+    for example http://localhost:9090/swagger
 
 ## Authors
 

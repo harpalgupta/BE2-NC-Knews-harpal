@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about\
+  description: "This is an Nc News Api (a reddit clone).  You can find out more about\
     \ Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).\
     \  For this sample, you can use the api key `special-key` to test the authorization\
     \ filters."
@@ -19,6 +19,7 @@ tags:
     description: "Find out more about our store"
     url: "http://swagger.io"
 schemes:
+- "https"
 - "http"
 paths:
   /topics:
@@ -65,6 +66,14 @@ paths:
         - "topic"
         - "user_id"
         - "created_at"  
+      - name: "sort_ascending"
+        in: "query"
+        description: "sort ascending"
+        required: false
+        type: "boolean"
+        enum:
+        - "true"
+        - "false"
       responses:
         405:
           description: "Invalid input"

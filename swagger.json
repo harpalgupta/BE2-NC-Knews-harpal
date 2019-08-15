@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.",
+    "description": "This is an Nc News Api (a reddit clone).  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.",
     "version": "1.0.0",
     "title": "Swagger for NC News Api",
     "termsOfService": "http://swagger.io/terms/",
@@ -81,6 +81,17 @@
               "topic",
               "user_id",
               "created_at"
+            ]
+          },
+          {
+            "name": "sort_ascending",
+            "in": "query",
+            "description": "sort ascending",
+            "required": false,
+            "type": "boolean",
+            "enum": [
+              "true",
+              "false"
             ]
           }
         ],
