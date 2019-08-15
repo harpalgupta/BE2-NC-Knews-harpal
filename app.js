@@ -3,36 +3,16 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const apiRouter = require('./routes/apiRouter');
 const { handle404, handleOtherErrors, handle422 } = require('./errors');
+const { PORT = "9090", HOST= "localhost" } = process.env;//v1 api routes
 
-const expressSwagger = require('express-swagger-generator')(app);
 
-let options = {
-    swaggerDefinition: {
-        info: {
-            description: 'This is a sample server',
-            title: 'Swagger',
-            version: '1.0.0',
-        },
-        host: 'localhost:9090',
-        basePath: '/api',
-        produces: [
-            "application/json",
-            "application/xml"
-        ],
-        schemes: ['http', 'https'],
-        securityDefinitions: {
-            JWT: {
-                type: 'apiKey',
-                in: 'header',
-                name: 'Authorization',
-                description: "",
-            }
-        }
-    },
-    basedir: __dirname, //app absolute path
-    files: ['./routes/*.js'] //Path to the API handle folder
-};
-expressSwagger(options)
+const swaggerUi = require('swagger-ui-express');
+var swaggerDoc = require('./swagger.json');
+
+swaggerDoc.host = HOST+":"+PORT;
+
+//app.use('/api/v1/', require('./routes/'));
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 
 app.use(cors());
