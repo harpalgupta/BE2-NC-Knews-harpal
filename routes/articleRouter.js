@@ -8,6 +8,7 @@ const {
   addCommentForArticle,
   updateComment,
   deleteComment,
+  getComment
 } = require('../controllers/articleController');
 
 const checkArticleID = (req, res, next, articleid) => {
@@ -18,19 +19,20 @@ const checkArticleID = (req, res, next, articleid) => {
   return next();
 };
 const checkCommentID = (req, res, next, commentid) => {
-  // console.log('checking', articleid);
+  console.log('checking', commentid);
   if (commentid.match(/\D/)) {
     return next({ status: 400, msg: 'Comment ID must be integer' });
   }
   return next();
 };
-// GET /api/topics/:topic/articles
+
 articleRouter.get('/', getArticles).all(handle405);
 articleRouter.param('article_id', checkArticleID);
 articleRouter.param('comment', checkCommentID);
 
 articleRouter
   .route('/:article_id/comments/:comment')
+  .get(getComment)
   .patch(updateComment)
   .delete(deleteComment)
   .all(handle405);

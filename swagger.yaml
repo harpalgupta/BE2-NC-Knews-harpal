@@ -1,0 +1,177 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "Swagger Petstore"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:9090"
+basePath: "/api"
+schemes:
+- "http"
+paths:
+  /topics:
+    get:
+      tags:
+      - "Topics"
+      summary: "Get All Topics"
+      description: ""
+      operationId: "getTopics"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        405:
+          description: "Invalid input"
+  /topics/{topic}/articles:
+    get:
+      tags:
+      - "Articles"
+      summary: "Get All Articles for given topic"
+      description: ""
+      operationId: "getArticlesForTopics"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "topic"
+        in: "path"
+        description: "Topic Name"
+        required: true
+        type: "string"
+      - name: "sort_by"
+        in: "query"
+        description: "sort by field"
+        required: false
+        type: "string"
+        enum:
+        - "votes"
+        - "article_id"
+        - "title"
+        - "body"
+        - "topic"
+        - "user_id"
+        - "created_at"  
+        
+      responses:
+        405:
+          description: "Invalid input"
+  /articles:
+    get:
+      tags:
+      - "Articles"
+      summary: "Get All Articles"
+      description: ""
+      operationId: "getArticles"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        405:
+          description: "Invalid input"
+  /articles/{articleId}:
+    get:
+      tags:
+      - "Articles"
+      summary: "Get single article by article id"
+      description: ""
+      operationId: "getArticle"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "articleId"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        405:
+          description: "Invalid input"
+  /articles/{articleId}/comments:
+    get:
+      tags:
+      - "Comments"
+      summary: "Get Comments for article"
+      description: ""
+      operationId: "getCommentsForArticle"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "articleId"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        405:
+          description: "Invalid input"
+  /articles/{articleId}/comments/{commentId}:
+    get:
+      tags:
+      - "Comments"
+      summary: "Get Comment"
+      description: ""
+      operationId: "getComment"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "articleId"
+          in: "path"
+          required: true
+          type: "integer"
+        - name: "commentId"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        405:
+          description: "Invalid input"                    
+  /users:
+    get:
+      tags:
+      - "Users"
+      summary: "Get All Users"
+      description: ""
+      operationId: "getUsers"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        405:
+          description: "Invalid input"
+  /users/{username}:
+    get:
+      tags:
+      - "Users"
+      summary: "Get Single User"
+      description: ""
+      operationId: "getUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "username"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        405:
+          description: "Invalid input"
+ 
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
