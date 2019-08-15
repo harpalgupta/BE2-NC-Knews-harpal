@@ -147,3 +147,20 @@ exports.deleteComment = (req, res, next) => connection('comments')
     return res.status(204).send({ msg: 'Deleted item' });
   })
   .catch(next);
+
+  exports.getComment = (req, res, next) => 
+  
+  {
+    console.log('in getComment',req.params.comment)
+    return connection('comments')
+    .where('comments.comment_id', req.params.comment)
+    .select()
+    .returning('*')
+    .then((result) => {
+      if (result.length === 0) return next({ status: 404, msg: 'Non existant Comment Id' });
+      return res.status(200).send({ result });
+    })
+    .catch(next);
+
+  }
+  
