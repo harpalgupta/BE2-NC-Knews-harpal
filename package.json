@@ -42,7 +42,7 @@
     "event-stream": "^3.3.4",
     "express": "^4.16.4",
     "express-route-params": "^1.0.1",
-    "knex": "^0.15.2",
+    "knex": "^0.19.5",
     "mocha": "^5.2.0",
     "pg": "^7.6.1",
     "swagger-ui-express": "^4.0.7",
