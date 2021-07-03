@@ -46,7 +46,6 @@
     "knex": "^0.95.6",
     "mocha": "^5.2.0",
     "pg": "^7.18.2",
-    "glob-parent": ">=5.1.2",
     "swagger": "^0.7.5",
     "swagger-ui-express": "^4.1.6"
   },
