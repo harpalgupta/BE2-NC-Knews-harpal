@@ -10,16 +10,16 @@ const { PORT = 9090 } = process.env;
 //   console.log(`listening on port ${PORT} ...`);
 // });
 
-const key = fs.readFileSync('./key/key.pem');
-const cert = fs.readFileSync('./key/cert.pem');
-const options = {
-  key,
-  cert,
-  passphrase: 'test',
-};
+// const key = fs.readFileSync('./key/key.pem');
+// const cert = fs.readFileSync('./key/cert.pem');
+// const options = {
+//   key,
+//   cert,
+//   passphrase: 'test',
+// };
 
 
-const server = http.createServer(options, app);
+const server = http.createServer(app);
 // const httpserver = http.createServer(app);
 
 // httpserver.listen('9091');
