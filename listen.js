@@ -19,10 +19,10 @@ const options = {
 };
 
 
-const server = https.createServer(options, app);
-const httpserver = http.createServer(app);
+const server = http.createServer(options, app);
+// const httpserver = http.createServer(app);
 
-httpserver.listen('9091');
+// httpserver.listen('9091');
 server.listen(PORT, () => {
   console.log(`server starting on port : ${PORT}`);
 });
