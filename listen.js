@@ -4,9 +4,9 @@ const https = require('https');
 const fs = require('fs');
 const app = require('./app');
 
-// const { PORT = 9090 } = process.env;
+const { PORT = 9090 } = process.env;
 
-const PORT = process.env.PORT || 80;
+// const PORT = process.env.PORT || 80;
 
 // app.listen(PORT, () => {
 //   console.log(`listening on port ${PORT} ...`);
@@ -21,10 +21,14 @@ const PORT = process.env.PORT || 80;
 // };
 
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
 // const httpserver = http.createServer(app);
 
 // httpserver.listen('9091');
-server.listen(PORT, () => {
+// server.listen(PORT, () => {
+//   console.log(`server starting on port : ${PORT}`);
+// });
+
+app.listen(PORT, () => {
   console.log(`server starting on port : ${PORT}`);
 });
