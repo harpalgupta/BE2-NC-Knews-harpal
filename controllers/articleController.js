@@ -1,11 +1,45 @@
 const { connection } = require('../db/connection');
 const { queriesHandle } = require('../utils/index');
 
-exports.getArticles = (req, res, next) => {
-  const queries = queriesHandle(req);
+// exports.getArticles = (req, res, next) => {
+//   const queries = queriesHandle(req);
 
-  return (
-    connection('articles')
+//   return (
+//     connection('articles')
+//       .select(
+//         'articles.article_id',
+//         'users.username as author',
+//         'articles.title',
+//         'articles.votes',
+//         'articles.created_at',
+//         'articles.topic',
+//         'articles.body',
+//       )
+//       .innerJoin('users', 'users.user_id', '=', 'articles.user_id')
+//       .leftJoin('comments', 'articles.article_id', '=', 'comments.article_id')
+//       .count('comments.comment_id as comment_count')
+//       .groupBy('articles.article_id', 'users.username')
+//       .limit(queries.limit)
+//       .orderBy([queries.sort_by], queries.sortOrder)
+//       .offset(queries.p * queries.limit)
+//       // deals with one article too
+//       .modify((queryBuilder) => {
+//         if (req.params.article_id) queryBuilder.where('articles.article_id', req.params.article_id);
+//       })
+//       .then((articles) => {
+//         if (articles.length === 0) return next({ status: 404, msg: 'Non existant Article Id' });
+//         if (articles.length === 1) return res.status(200).send(articles[0]);
+
+//         return res.status(200).send({ articles });
+//       })
+//       .catch(next)
+//   );
+// };
+
+exports.getArticles = async (req, res, next) => {
+  const queries = queriesHandle(req);
+  try {
+    const articles = await connection('articles')
       .select(
         'articles.article_id',
         'users.username as author',
@@ -22,18 +56,22 @@ exports.getArticles = (req, res, next) => {
       .limit(queries.limit)
       .orderBy([queries.sort_by], queries.sortOrder)
       .offset(queries.p * queries.limit)
-      // deals with one article too
+    // deals with one article too
       .modify((queryBuilder) => {
         if (req.params.article_id) queryBuilder.where('articles.article_id', req.params.article_id);
-      })
-      .then((articles) => {
-        if (articles.length === 0) return next({ status: 404, msg: 'Non existant Article Id' });
-        if (articles.length === 1) return res.status(200).send(articles[0]);
+      });
 
+    switch (articles.length) {
+      case 0:
+        return next({ status: 404, msg: 'Non existant Article Id' });
+
+      case 1: return res.status(200).send(articles[0]);
+      default:
         return res.status(200).send({ articles });
-      })
-      .catch(next)
-  );
+    }
+  } catch (e) {
+    return next(e);
+  }
 };
 
 exports.updateArticle = (req, res, next) => {
@@ -47,7 +85,7 @@ exports.updateArticle = (req, res, next) => {
       })
       .catch(next);
   }
-  if (!Number.isInteger(body.inc_votes) && body.inc_votes) next({ status: 400, msg: 'Invalid inc_votes' });
+  if (!Number.isInteger(body.inc_votes) && body.inc_votes) { next({ status: 400, msg: 'Invalid inc_votes' }); }
   return connection('articles')
     .update('votes')
     .increment('votes', body.inc_votes)
@@ -62,7 +100,7 @@ exports.deleteArticle = (req, res, next) => connection('articles')
   .del()
   .returning('*')
   .then((result) => {
-    if (result.length === 0) return next({ status: 404, msg: 'Non existant Article Id' });
+    if (result.length === 0) { return next({ status: 404, msg: 'Non existant Article Id' }); }
     return res.status(204).send({ msg: 'Deleted item' });
   })
   .catch(next);
@@ -87,7 +125,7 @@ exports.getCommentsForArticle = (req, res, next) => {
     .where('comments.article_id', req.params.article_id)
     .then((comments) => {
       // console.log(comments);
-      if (comments.length === 0) return next({ status: 404, msg: 'Non existant Article Id' });
+      if (comments.length === 0) { return next({ status: 404, msg: 'Non existant Article Id' }); }
       return res.status(200).send({ comments });
     })
     .catch(next);
@@ -123,7 +161,7 @@ exports.updateComment = (req, res, next) => {
       .then(([untouchedArticle]) => res.status(200).send(untouchedArticle))
       .catch(next);
   }
-  if (!Number.isInteger(body.inc_votes) && body.inc_votes) return next({ status: 400, msg: 'Invalid inc_votes' });
+  if (!Number.isInteger(body.inc_votes) && body.inc_votes) { return next({ status: 400, msg: 'Invalid inc_votes' }); }
 
   return connection('comments')
     .increment('votes', body.inc_votes)
@@ -143,7 +181,7 @@ exports.deleteComment = (req, res, next) => connection('comments')
   .del()
   .returning('*')
   .then((result) => {
-    if (result.length === 0) return next({ status: 404, msg: 'Non existant Article Id' });
+    if (result.length === 0) { return next({ status: 404, msg: 'Non existant Article Id' }); }
     return res.status(204).send({ msg: 'Deleted item' });
   })
   .catch(next);
@@ -153,7 +191,7 @@ exports.getComment = (req, res, next) => connection('comments')
   .select()
   .returning('*')
   .then((result) => {
-    if (result.length === 0) return next({ status: 404, msg: 'Non existant Comment Id' });
+    if (result.length === 0) { return next({ status: 404, msg: 'Non existant Comment Id' }); }
     return res.status(200).send({ result });
   })
   .catch(next);
