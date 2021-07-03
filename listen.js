@@ -4,7 +4,9 @@ const https = require('https');
 const fs = require('fs');
 const app = require('./app');
 
-const { PORT = 9090 } = process.env;
+// const { PORT = 9090 } = process.env;
+
+const PORT = process.env.PORT || 80;
 
 // app.listen(PORT, () => {
 //   console.log(`listening on port ${PORT} ...`);
