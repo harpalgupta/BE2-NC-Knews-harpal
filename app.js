@@ -16,7 +16,6 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 
 app.use(cors());
-app.use(bodyParser.json());
 
 app.use('/api', apiRouter);
 
