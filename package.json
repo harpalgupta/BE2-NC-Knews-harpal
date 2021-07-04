@@ -46,7 +46,7 @@
     "express": "^4.17.1",
     "express-swagger-generator": "^1.1.17",
     "js-yaml": "^3.14.1",
-    "knex": "<0.20.0",
+    "knex": "0.21.19",
     "mocha": "^5.2.0",
     "pg": "^7.18.2",
     "pg-connection-string": "^2.4.0",
