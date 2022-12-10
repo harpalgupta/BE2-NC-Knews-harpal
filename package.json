@@ -43,7 +43,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.24.0",
     "event-stream": "^3.3.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-swagger-generator": "^1.1.17",
     "js-yaml": "^3.14.1",
     "knex": "<0.21.1",
